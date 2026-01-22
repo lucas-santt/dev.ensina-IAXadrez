@@ -34,3 +34,20 @@ __Próximos passos:__
 
 - Estudar e compartilhar materiais sobre como implementar a IA no jogo
 - Fazer uma reunião para discutir e separar as responsabilidades do projeto entre os membros
+
+## v0.3 [18.01.26 - 24.01.24] [ONGOING]
+
+- Realizado uma reunião entre membros no dia 20.01:
+    - Membros Presentes: Felipe, Lucas, Pedro
+    - Foi discutido as fontes e materiais que iremos utilizar
+    - Determinamos a estrutura do projeto e responsabilidades
+    - Início da implementação da IA no jogo
+- Estrutura da classe MCST e, principalmente, Node feita
+    - Membros responsávies: Felipe e Lucas
+    - Reunião realizada em 22.01 para discutir a implementação
+    - Por enquanto, utilizamos o código presente nos materiais fonte como base
+- Início da criação da classe do próprio jogo de Xadrez
+    - Membros responsáveis: Felipe e Lucas
+
+**Obs:** Pedro está de viagem e não poderá complementar na prática projeto esta semana, 
+    porém, está acompanhando o projeto e ajudando na implementação e comunicação da equipe.
