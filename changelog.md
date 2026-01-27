@@ -35,7 +35,7 @@ __Próximos passos:__
 - Estudar e compartilhar materiais sobre como implementar a IA no jogo
 - Fazer uma reunião para discutir e separar as responsabilidades do projeto entre os membros
 
-## v0.3 [18.01.26 - 24.01.24] [ONGOING]
+## v0.3 [18.01.26 - 24.01.24]
 
 - Realizado uma reunião entre membros no dia 20.01:
     - Membros Presentes: Felipe, Lucas, Pedro
