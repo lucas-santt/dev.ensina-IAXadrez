@@ -73,7 +73,17 @@ class Node:
     else:
             q_value = 1 - ((child.value_sum / child.visit_count) + 1) / 2
     return q_value + self.args['C'] * (math.sqrt(self.visit_count + 1) / (child.visit_count + 1)) * child.prior
+  
   def expand(self, policy, game):
+    """
+      Expande o nó, criando um filho utilizando a política fornecida pelo modelo.
+
+      A política é um vetor de probabilidades para cada ação possível.
+
+      Parâmetros:
+        policy: Vetor de probabilidades para cada ação possível.
+        game: Classe do jogo, utilizada para obter o próximo estado a partir de uma ação.
+    """
     for action, prob in enumerate(policy):
         if prob <= 0:
             continue
@@ -109,13 +119,28 @@ class Node:
 
 class MCTS:
     def __init__(self, game, args, model):
+        """
+          Parâmetros da classe MCTS
+        
+        game: Classe do jogo
+        args: Parâmetros da árvore, com o número de iterações e o valor de C para o UCB
+        model: Modelo utilizado para obter a política e o valor de um estado
+        """
         self.game = game
         self.args = args
         self.model = model
 
-
     @torch.no_grad()
     def search(self, state):
+        """
+          Realiza uma busca MCTS a partir do estado fornecido, retornando
+            as probabilidades de cada ação a partir da raiz da árvore.
+
+          Parâmetros:
+            state: Estado do jogo a partir do qual a busca será realizada
+          Retorna:
+            action_probs: Vetor de probabilidades para cada ação possível a partir do estado fornecido
+        """
         root = Node(state, self.args)
 
         valid_moves = state.get_valid_moves(state)
@@ -171,15 +196,3 @@ class MCTS:
                    action_probs = mask / mask.sum()
 
               return action_probs
-
-
-
-        """
-        # Assim se faz no jogo da velha, mas aqui não funciona
-        # pois o action_size varia muito (é o equivalente ao len(root.children))
-        action_probs = np.zeros(self.game.action_size)
-        for child in root.children:
-            action_probs[child.action_taken] = child.visit_count
-        action_probs /= np.sum(action_probs)
-        return action_probs
-        """

@@ -51,3 +51,19 @@ __Próximos passos:__
 
 **Obs:** Pedro está de viagem e não poderá complementar na prática projeto esta semana, 
     porém, está acompanhando o projeto e ajudando na implementação e comunicação da equipe.
+
+## v0.4 [25.01.26 - 31.01.26]
+
+- MCTS Finalizada, finalmente podemos jogar!!!
+    - Membros responsáveis: Felipe e Lucas
+- Início da aplicação da rede neural
+    - Membros responsáveis: Felipe, Lucas e Pedro
+- Próximos passos:
+    - Aplicar a rede neural
+
+# v0.5 [01.02.26 - 08.02.26]
+
+- Finalizada a implementação da rede neural
+    - Membros responsáveis: Felipe e Pedro
+- Documentação do código e do notebook
+    - Membro responsável: Lucas
