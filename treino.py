@@ -9,7 +9,24 @@ from rede_neural import ResNet
 from mcts import MCTS
 
 class AlphaZero:
+    """
+        Classe responsável por gerenciar o processo de self-play e
+            treinamento da rede neural.
+
+        Aplica a rede neural na geração e decisão de jogadas na
+            árvore MCTS.
+        
+        Treina a rede neural com o dados gerados pelas partidas de self-play.
+    """
     def __init__(self, model, optimizer, game, args):
+        """
+            Parâmetros:
+                model: Rede neural a ser treinada
+                optimizer: Otimizador para atualizar os pesos da rede
+                game: Classe do jogo (Xadrez)
+                args: Parâmetros para o MCTS e o treinamento
+                mcts: Instância da classe MCTS
+        """
         self.model = model
         self.optimizer = optimizer
         self.game = game
@@ -18,8 +35,18 @@ class AlphaZero:
 
     def selfPlay(self):
         """
-        Gera uma partida por self-play e retorna uma lista de tuplas:
-          (encoded_state (13,8,8), pi (4096,), z (float))
+            Gera uma (!!!) partida por self-play e retorna uma lista de tuplas:
+            (encoded_state (13,8,8), pi (4096,), z (float))
+
+            Faz isso baseado em uma busca MSCTS para cada estado da partida,
+                onde a policy da própria rede neural é utilizada para guiar a busca,
+                ou seja, a rede neural treina si própria!!! (não só na questão de jogar
+                contra si mesma, mas também na questão de usar a própria rede para guiar a busca)
+
+            Retorna:
+                Lista de tuplas contendo o estado codificado, 
+                    a política do MCTS e o valor do resultado 
+                    da partida para cada estado visitado durante a partida
         """
         memory = []
         self.game = self.game.get_initial_state()
@@ -46,9 +73,12 @@ class AlphaZero:
 
     def train(self, memory):
         """
-        Treina a rede usando:
-          - policy loss: CE com soft targets (pi do MCTS)
-          - value loss: MSE
+            Treina a rede usando os dados de uma (!!!) partida apenas (vinda de self-play),
+                punindo e recompensando a rede de acordo com o resultado dessa partida.
+
+            Treina a rede usando:
+            - policy loss: CE com soft targets (pi do MCTS)
+            - value loss: MSE
         """
         random.shuffle(memory)
 
@@ -77,6 +107,10 @@ class AlphaZero:
             self.optimizer.step()
 
     def learn(self):
+        """
+            Gerencia o processo de aprendizado, alternando entre 
+                self-play e treinamento consecutivamente por um número definido de iterações.
+        """
         for iteration in range(self.args['num_iterations']):
             memory = []
 
@@ -88,6 +122,7 @@ class AlphaZero:
             for _ in trange(self.args['num_epochs'], desc=f"Train {iteration}"):
                 self.train(memory)
 
+            # Salva a rede neural em um arquivo
             torch.save(self.model.state_dict(), f"model_{iteration}.pt")
             torch.save(self.optimizer.state_dict(), f"optimizer_{iteration}.pt")
 
