@@ -11,11 +11,11 @@ from rede_neural import ResNet
 xadrez = Xadrez()
 model = ResNet(Xadrez(), num_resBlocks=4, num_hidden=64)
 
-model.load_state_dict(torch.load("model_49.pt", map_location="cpu"))
+model.load_state_dict(torch.load("model_0.pt", map_location="cpu"))
 
 args = {
     # MCTS
-    "num_searches": 50,
+    "num_searches": 1000,
     "C": 1.5,
 }
 
@@ -49,8 +49,6 @@ while True:
       mcts.game = state
       neutral_state = state.copy()
       mcts_probs = mcts.search(state)
-      print(max(mcts_probs), sum(mcts_probs), np.argmax(mcts_probs))
-      print([x for x in mcts_probs if x != 0])
       action = np.argmax(mcts_probs)
       print(f"Choosed {action}")
 

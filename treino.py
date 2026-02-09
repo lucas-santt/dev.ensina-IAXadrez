@@ -138,8 +138,8 @@ args = {
 
     # treino
     "batch_size": 64,
-    "num_iterations": 50,
-    "num_selfPlay_iterations": 2,
+    "num_iterations": 200,
+    "num_selfPlay_iterations": 25,
     "num_epochs": 2,
 
     # opcionais (deixa assim por enquanto)
