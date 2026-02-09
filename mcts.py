@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from tqdm.notebook import trange
 import random
+import math
 
 class Node:
   def __init__(self, state, args, parent=None, action_taken=None, prior=0):
@@ -73,6 +74,7 @@ class Node:
     else:
             q_value = 1 - ((child.value_sum / child.visit_count) + 1) / 2
     return q_value + self.args['C'] * (math.sqrt(self.visit_count + 1) / (child.visit_count + 1)) * child.prior
+  
   def expand(self, policy, game):
     for action, prob in enumerate(policy):
         if prob <= 0:
@@ -156,21 +158,21 @@ class MCTS:
 
                # BackPropagation
               node.backpropagate(value, self.game)
+              
+        action_probs = np.zeros(self.game.action_size, dtype=np.float32)              
 
-              action_probs = np.zeros(self.game.action_size, dtype=np.float32)
+        for child in root.children:
+             action_probs[child.action_taken] = child.visit_count
 
-              for child in root.children:
-                   action_probs[child.action_taken] = child.visit_count
+             s = action_probs.sum()
+        if s > 0:
+             action_probs /= s
+        else:
+        # fallback: se MCTS não gerou filhos, devolve distribuição uniforme entre ações válidas
+             mask = self.game.get_valid_moves_mask(state)
+             action_probs = mask / mask.sum()
 
-                   s = action_probs.sum()
-              if s > 0:
-                   action_probs /= s
-              else:
-              # fallback: se MCTS não gerou filhos, devolve distribuição uniforme entre ações válidas
-                   mask = self.game.get_valid_moves_mask(state)
-                   action_probs = mask / mask.sum()
-
-              return action_probs
+        return action_probs
 
 
 
